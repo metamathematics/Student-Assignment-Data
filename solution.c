@@ -25,7 +25,7 @@ struct record {                 /* Data structure used to hold each record */
     int book_id;                    /* The Book ID */
     char title[50];                 /* The Book Title */
     char report_submitted[5];       /* YES/NO - If the Report has been submitted */
-    struct record *next;
+    struct record *next;            /* The next record */
 };
 
 void readstring(FILE *, char *, int);
@@ -56,8 +56,8 @@ int writedata(struct record *, char *, char *, int);
 
 int main(int argc, char *argv[])
 {
-    int term_val; /* The return value */
-    struct record *first; /* A pointer to the first record in the list */
+    int term_val; 
+    struct record *first; 
 
     /* The  column names for the output*/
     char header[] = "Student_ID,Last_Name,First_Name,Book_ID,Book_Title,Report_Submitted";
@@ -174,17 +174,17 @@ int loadstudents(struct record **firstaddress, char *filename)
 
             /* Allocate space for a new record */
             node = (struct record*) malloc(sizeof(struct record));
+            
+            /* Add data to the record */
+            node->student_id = id;
+            strcpy(node->last_name, lastname);
+            strcpy(node->first_name, firstname);
+
+            node->next = NULL;
 
             /* If the new record is the first record to be added */
             if (*firstaddress == NULL)
             {
-                /* Add the data to the new record */
-                node->student_id = id;
-                strcpy(node->last_name, lastname);
-                strcpy(node->first_name, firstname);
-
-                node->next = NULL;
-
                 /* Point the 'pointer to the first record' to the new record */
                 *firstaddress = node;
             }
@@ -197,12 +197,6 @@ int loadstudents(struct record **firstaddress, char *filename)
                     current = current->next;
                 }
 
-                /* Add the data to the new record */
-                node->student_id = id;
-                strcpy(node->last_name, lastname);
-                strcpy(node->first_name, firstname);
-
-                node->next = NULL;
                 previous->next = node;
             }
         }
